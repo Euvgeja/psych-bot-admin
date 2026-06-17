@@ -1,13 +1,22 @@
 # psych-bot-admin
 
-Read-only админка для просмотра данных psych-bot.
+Веб-админка (React) для просмотра данных psych-bot.
 
-Отдельное приложение: деплоится независимо от бэкенда.
+Отдельный репозиторий, деплоится независимо от бэкенда.
+
+## Не путать с бэкендом
+
+| | Бэкенд (`psych-bot`) | Фронт (этот репозиторий) |
+|--|----------------------|---------------------------|
+| Что это | Java-модуль `admin` для бота | React-сайт в браузере |
+| Образ Docker | `psychbot-backend-admin` | `psychbot-admin-ui` |
+| Контейнер | `psychbot-admin` | `psychbot-admin-ui` |
+| Порт | 8090 (внутренний) | **3000** (для браузера) |
 
 ## Локальная разработка
 
 ```bash
-# 1. Бэкенд (в репозитории psych-bot)
+# 1. Бэкенд (репозиторий psych-bot)
 docker compose up -d postgres
 ./gradlew :api:bootRun
 
@@ -19,53 +28,67 @@ npm run dev
 
 Vite проксирует `/api` на `localhost:8081` — `VITE_API_URL` не нужен.
 
-## Продакшен (пока без домена, по IP сервера)
+## Продакшен на сервере
 
-### 1. API на сервере
-
-В `psych-bot` после `git pull`:
+### 1. Подготовь `.env`
 
 ```bash
-cd /opt/psych-bot
-docker compose up -d --build api
+cd /opt/psych-bot-admin
+cp .env.example .env
+nano .env
 ```
 
-В `.env` добавь (подставь IP сервера и порт фронта):
+Пример (подставь IP сервера):
 
+```env
+VITE_API_URL=http://YOUR_SERVER_IP:8081
+VITE_ADMIN_USER=admin
+VITE_ADMIN_PASSWORD=сложный_пароль
 ```
+
+### 2. Запусти фронт
+
+**Вариант A — docker compose (рекомендуется):**
+
+```bash
+docker compose up -d --build
+```
+
+**Вариант B — без Docker (если лимит Docker Hub):**
+
+```bash
+npm ci
+npm run build
+npx serve -s dist -l 3000
+```
+
+Админка: `http://YOUR_SERVER_IP:3000`
+
+### 3. API на бэкенде (для данных в таблицах)
+
+В `/opt/psych-bot/.env`:
+
+```env
 API_CORS_ORIGINS=http://YOUR_SERVER_IP:3000
 ```
 
-Чтобы API был доступен снаружи, в `docker-compose.yml` у сервиса `api` поменяй порт:
+В `psych-bot/docker-compose.yml` у сервиса `api` порт наружу:
 
 ```yaml
 ports:
   - "0.0.0.0:8081:8081"
 ```
 
-Открой порт `8081` в firewall.
-
-### 2. Фронт на сервере
-
 ```bash
-# Сборка с URL API
-VITE_API_URL=http://YOUR_SERVER_IP:8081 npm run build
-
-# Вариант A: Docker
-docker build --build-arg VITE_API_URL=http://YOUR_SERVER_IP:8081 -t psych-bot-admin .
-docker run -d -p 3000:80 --name psych-bot-admin psych-bot-admin
-
-# Вариант B: статика через npx
-npx serve -s dist -l 3000
+cd /opt/psych-bot
+docker compose up -d --build api
 ```
-
-Админка: `http://YOUR_SERVER_IP:3000`
-
-### Когда появится домен
-
-Поставь nginx на сервере — один vhost, статика + `proxy_pass /api` на `127.0.0.1:8081`. Тогда CORS не нужен, API снова только на localhost.
 
 ## Структура
 
-- `src/config/entities.ts` — список сущностей и эндпоинтов (синхронизировать с `psych-bot/api`)
-- `src/pages/EntityPage.tsx` — универсальная страница-таблица
+```
+src/
+  app/           — точка входа, роуты
+  features/      — auth, shell, entity-list, client-detail
+  shared/        — api, ui, config
+```

@@ -1,0 +1,13 @@
+services:
+  ui:
+    build:
+      context: .
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+        VITE_ADMIN_USER: ${VITE_ADMIN_USER:-admin}
+        VITE_ADMIN_PASSWORD: ${VITE_ADMIN_PASSWORD:-changeme}
+    image: psychbot-admin-ui
+    container_name: psychbot-admin-ui
+    ports:
+      - "3000:80"
+    restart: unless-stopped
