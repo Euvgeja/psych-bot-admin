@@ -54,7 +54,9 @@ export function useEntityListController<K extends EntityConfig['key']>(
 
   const onRowClick = entity.drillDown
     ? (rowId: number) => openTab(`/clients/${rowId}`, `Client #${rowId}`)
-    : undefined
+    : entity.detail
+      ? (rowId: number) => openTab(`${entity.path}/${rowId}`, `${entity.title} #${rowId}`)
+      : undefined
 
   return {
     viewModel: {

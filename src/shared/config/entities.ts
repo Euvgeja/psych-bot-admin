@@ -8,6 +8,7 @@ export interface EntityConfig<K extends EntityKey = EntityKey> {
   columns: string[]
   clientScoped?: boolean
   drillDown?: boolean
+  detail?: boolean
 }
 
 export const CLIENT_RELATIONS: EntityConfig[] = [
@@ -105,6 +106,7 @@ export const ENTITIES: EntityConfig[] = [
     path: '/meditations',
     endpoint: '/api/meditations',
     columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    detail: true,
   },
   {
     key: 'practices',
@@ -112,6 +114,7 @@ export const ENTITIES: EntityConfig[] = [
     path: '/practices',
     endpoint: '/api/practices',
     columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    detail: true,
   },
   {
     key: 'courses',
@@ -119,6 +122,7 @@ export const ENTITIES: EntityConfig[] = [
     path: '/courses',
     endpoint: '/api/courses',
     columns: ['id', 'title', 'price', 'url', 'active', 'createdAt'],
+    detail: true,
   },
   {
     key: 'knowledge-entries',
@@ -126,6 +130,7 @@ export const ENTITIES: EntityConfig[] = [
     path: '/knowledge-entries',
     endpoint: '/api/knowledge-entries',
     columns: ['id', 'label', 'content', 'createdAt'],
+    detail: true,
   },
   {
     key: 'system-configurations',
@@ -133,5 +138,6 @@ export const ENTITIES: EntityConfig[] = [
     path: '/system-configurations',
     endpoint: '/api/system-configurations',
     columns: ['id', 'name', 'data', 'createdAt'],
+    detail: true,
   },
 ]

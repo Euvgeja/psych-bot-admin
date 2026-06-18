@@ -8,4 +8,8 @@ export const entityListService = {
   ): Promise<EntityListingResult<T>> {
     return httpClient.post<EntityListingResult<T>>(`${endpoint}/list`, options)
   },
+
+  getById<T extends BaseBean>(endpoint: string, id: number): Promise<T> {
+    return httpClient.get<T>(`${endpoint}/${id}`)
+  },
 }
