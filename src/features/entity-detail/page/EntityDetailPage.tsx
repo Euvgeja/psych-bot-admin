@@ -30,7 +30,7 @@ export function EntityDetailPage({ entity }: { entity: EntityConfig }) {
       record={record}
       loading={loading}
       error={error}
-      onBack={() => navigate(entity.path)}
+      onBack={() => navigate(-1)}
     />
   )
 }
