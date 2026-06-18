@@ -40,7 +40,7 @@ export const CLIENT_RELATIONS: EntityConfig[] = [
     title: 'Сессия',
     path: '/client-sessions',
     endpoint: '/api/client-sessions',
-    columns: ['id', 'mode', 'phase', 'returningUser', 'lastActivity'],
+    columns: ['id', 'mode', 'phase', 'returningUser', 'lastActivity', 'createdAt'],
     clientScoped: true,
   },
   {
@@ -104,14 +104,14 @@ export const ENTITIES: EntityConfig[] = [
     title: 'Медитации',
     path: '/meditations',
     endpoint: '/api/meditations',
-    columns: ['id', 'title', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
   },
   {
     key: 'practices',
     title: 'Практики',
     path: '/practices',
     endpoint: '/api/practices',
-    columns: ['id', 'title', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
   },
   {
     key: 'courses',
@@ -132,6 +132,6 @@ export const ENTITIES: EntityConfig[] = [
     title: 'Конфигурация',
     path: '/system-configurations',
     endpoint: '/api/system-configurations',
-    columns: ['id', 'name', 'createdAt'],
+    columns: ['id', 'name', 'data', 'createdAt'],
   },
 ]
