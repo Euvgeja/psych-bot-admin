@@ -3,12 +3,13 @@ import type { BaseBean } from '../../api/types'
 import { EmptyStateView } from '../EmptyState/EmptyState.view'
 import '../ui.css'
 
-function formatValue(value: unknown): string {
+function formatValue(value: unknown, truncate = true): string {
   if (value === null || value === undefined) return '—'
   if (typeof value === 'boolean') return value ? 'да' : 'нет'
-  if (typeof value === 'object') return JSON.stringify(value)
+  if (typeof value === 'object') return JSON.stringify(value, null, 2)
   const text = String(value)
-  return text.length > 120 ? `${text.slice(0, 120)}…` : text
+  if (truncate && text.length > 120) return `${text.slice(0, 120)}…`
+  return text
 }
 
 export interface DataTableViewProps<T extends BaseBean> {
@@ -83,8 +84,8 @@ export function DetailPanelView<T extends BaseBean>({ row, columns }: DetailPane
     <dl className="ui-detail">
       {entries.map(([key, value]) => (
         <div key={String(key)} className="ui-detail-row">
-          <dt>{String(key)}</dt>
-          <dd>{formatValue(value)}</dd>
+          <dt className="ui-detail-label">{String(key)}</dt>
+          <dd className="ui-detail-value">{formatValue(value, false)}</dd>
         </div>
       ))}
     </dl>

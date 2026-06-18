@@ -28,6 +28,9 @@
   font-weight: var(--font-weight-semibold);
   position: sticky;
   top: 0;
+  resize: horizontal;
+  overflow: hidden;
+  min-width: 60px;
 }
 
 .ui-table tbody tr:nth-child(even) {
@@ -45,23 +48,37 @@
 
 .ui-detail {
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .ui-detail-row {
-  margin-bottom: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.ui-detail-row dt {
+.ui-detail-row:last-child {
+  border-bottom: none;
+}
+
+.ui-detail-label {
   font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
-  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.ui-detail-row dd {
+.ui-detail-value {
   margin: 0;
   font-size: var(--font-size-sm);
+  color: var(--color-text);
   word-break: break-word;
   white-space: pre-wrap;
+  line-height: 1.6;
 }
 
 .ui-empty {
