@@ -6,12 +6,12 @@ import { EntityDetailPage } from '../features/entity-detail/page/EntityDetailPag
 import { EntityListPage } from '../features/entity-list/page/EntityListPage'
 import { TabProvider } from '../features/shell/context/TabProvider'
 import { ShellLayout } from '../features/shell/page/ShellLayout'
-import { ENTITIES } from '../shared/config/entities'
+import { CLIENT_RELATIONS, ENTITIES } from '../shared/config/entities'
 import { getEntityByPath, MENU_GROUPS } from '../shared/config/navigation'
 
 function WorkspaceRoutes() {
   const entityRoutes = MENU_GROUPS.flatMap((group) => group.items)
-  const detailEntities = ENTITIES.filter((e) => e.detail)
+  const detailEntities = [...ENTITIES, ...CLIENT_RELATIONS].filter((e) => e.detail)
 
   return (
     <Routes>

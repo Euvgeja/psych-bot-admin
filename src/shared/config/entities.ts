@@ -35,6 +35,7 @@ export const CLIENT_RELATIONS: EntityConfig[] = [
     endpoint: '/api/chat-messages',
     columns: ['id', 'role', 'content', 'tokensUsed', 'createdAt'],
     clientScoped: true,
+    detail: true,
   },
   {
     key: 'client-sessions',
@@ -43,6 +44,7 @@ export const CLIENT_RELATIONS: EntityConfig[] = [
     endpoint: '/api/client-sessions',
     columns: ['id', 'mode', 'phase', 'returningUser', 'lastActivity', 'createdAt'],
     clientScoped: true,
+    detail: true,
   },
   {
     key: 'client-content-recommendations',
