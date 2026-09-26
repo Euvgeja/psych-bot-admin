@@ -22,6 +22,14 @@ export const httpClient = {
   get<T>(url: string): Promise<T> {
     return request<T>(url)
   },
+
+  patch<T>(url: string, body: unknown): Promise<T> {
+    return request<T>(url, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  },
 }
 
 export function buildListingOptions(

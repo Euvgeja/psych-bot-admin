@@ -12,6 +12,7 @@ export type {
   EntityRow,
   KnowledgeEntryBean,
   ContentPackageBean,
+  ContentPackageItemBean,
   PaymentBean,
   PracticeItemBean,
   RecommendationBean,

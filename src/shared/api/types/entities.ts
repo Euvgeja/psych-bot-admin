@@ -109,6 +109,15 @@ export interface ContentPackageBean extends BaseBean {
   accessTier: string | null
   active: boolean
   itemCount: number
+  items: ContentPackageItemBean[]
+}
+
+export interface ContentPackageItemBean {
+  id: number
+  title: string | null
+  contentType: string | null
+  shortDescription: string | null
+  active: boolean
 }
 
 export interface CourseBean extends BaseBean {

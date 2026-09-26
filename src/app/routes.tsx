@@ -3,6 +3,7 @@ import { LoginPage } from '../features/auth/page/LoginPage'
 import { ProtectedRoute } from '../features/auth/page/ProtectedRoute'
 import { ClientDetailPage } from '../features/client-detail/page/ClientDetailPage'
 import { EntityDetailPage } from '../features/entity-detail/page/EntityDetailPage'
+import { PackageDetailPage } from '../features/entity-detail/page/PackageDetailPage'
 import { EntityListPage } from '../features/entity-list/page/EntityListPage'
 import { TabProvider } from '../features/shell/context/TabProvider'
 import { ShellLayout } from '../features/shell/page/ShellLayout'
@@ -22,7 +23,13 @@ function WorkspaceRoutes() {
           <Route
             key={`${entity.key}-detail`}
             path={`${entity.path}/:id`}
-            element={<EntityDetailPage entity={entity} />}
+            element={
+              entity.key === 'content-packages' ? (
+                <PackageDetailPage entity={entity} />
+              ) : (
+                <EntityDetailPage entity={entity} />
+              )
+            }
           />
         ))}
         {entityRoutes.map((item) => {
