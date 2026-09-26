@@ -63,6 +63,7 @@ export function useEntityListController<K extends EntityConfig['key']>(
       title: entity.title,
       rows,
       columns: entity.columns,
+      columnLabels: entity.fieldLabels,
       loading,
       error,
       page,

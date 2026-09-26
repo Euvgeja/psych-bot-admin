@@ -28,8 +28,8 @@ export const MENU_GROUPS: MenuGroup[] = [
     id: 'content',
     label: 'Content',
     items: [
-      { id: 'meditations', label: 'Meditations', path: '/meditations', entityKey: 'meditations' },
-      { id: 'practices', label: 'Practices', path: '/practices', entityKey: 'practices' },
+      { id: 'practice-items', label: 'Items', path: '/practice-items', entityKey: 'practice-items' },
+      { id: 'content-packages', label: 'Packages', path: '/content-packages', entityKey: 'content-packages' },
       { id: 'courses', label: 'Courses', path: '/courses', entityKey: 'courses' },
     ],
   },

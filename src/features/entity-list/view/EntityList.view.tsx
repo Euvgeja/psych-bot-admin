@@ -9,6 +9,7 @@ export interface EntityListViewProps<T extends BaseBean> {
   title: string
   rows: T[]
   columns: string[]
+  columnLabels?: Record<string, string>
   loading: boolean
   error: string | null
   page: number
@@ -25,6 +26,7 @@ export function EntityListView<T extends BaseBean>({
   title,
   rows,
   columns,
+  columnLabels,
   loading,
   error,
   page,
@@ -50,7 +52,7 @@ export function EntityListView<T extends BaseBean>({
 
       {!loading && !error && (
         <>
-          <DataTableView rows={rows} columns={columns} onRowClick={onRowClick} />
+          <DataTableView rows={rows} columns={columns} columnLabels={columnLabels} onRowClick={onRowClick} />
           <PaginationView
             page={page}
             pageSize={pageSize}

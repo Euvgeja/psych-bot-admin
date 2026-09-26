@@ -1,88 +1,48 @@
 # psych-bot-admin
 
-Веб-админка (React) для просмотра данных psych-bot.
+Веб-админка (React) для просмотра данных [psych-bot](https://github.com/Euvgeja/psych-bot).
 
 Отдельный репозиторий, деплоится независимо от бэкенда.
 
-## Не путать с бэкендом
+**Production на VPS (nginx :4205, miniapp :4305, backend :8080):** [docs/VPS-PRODUCTION.md](docs/VPS-PRODUCTION.md) — полная схема для деплоя и для AI-ассистентов.
 
-| | Бэкенд (`psych-bot`) | Фронт (этот репозиторий) |
-|--|----------------------|---------------------------|
-| Что это | Java-модуль `admin` для бота | React-сайт в браузере |
-| Образ Docker | `psychbot-backend-admin` | `psychbot-admin-ui` |
-| Контейнер | `psychbot-admin` | `psychbot-admin-ui` |
-| Порт | 8090 (внутренний) | **3000** (для браузера) |
+## Не путать
+
+| | psych-bot (Java) | Этот репозиторий (React) |
+|--|------------------|---------------------------|
+| Назначение | Monolith: бот + REST `/api/...` | SPA в браузере |
+| Процесс на VPS | Docker `psychbot-backend`, `127.0.0.1:8080` | Статика `/var/www/psych-bot-admin`, nginx **4205** |
+| Модуль в репо | `modules/api-admin` (только Java) | — |
+
+Удалённый Spring Boot Admin (`monitoring`) — **не** эта панель.
 
 ## Локальная разработка
 
 ```bash
-# 1. Бэкенд (репозиторий psych-bot)
-docker compose up -d postgres
-./gradlew :api:bootRun
+# 1. Backend (psych-bot), monolith на 8080
+docker compose up -d postgres redis
+./gradlew :backend:bootRun
 
 # 2. Фронт
-npm install
+npm ci
 npm run dev
 # → http://localhost:5173
 ```
 
-Vite проксирует `/api` на `localhost:8081` — `VITE_API_URL` не нужен.
+`VITE_API_URL` пустой — Vite проксирует `/api` на backend (см. `vite.config.ts`).
 
-## Продакшен на сервере
+## Продакшен (кратко)
 
-### 1. Подготовь `.env`
+1. `.env` из `.env.example` (`VITE_API_URL=` при nginx proxy).
+2. `npm ci && npm run build`
+3. `cp -a dist/. /var/www/psych-bot-admin/`
+4. nginx: [scripts/deploy-nginx-port4205.example.conf](scripts/deploy-nginx-port4205.example.conf)
 
-```bash
-cd /opt/psych-bot-admin
-cp .env.example .env
-nano .env
-```
+Подробно: [docs/VPS-PRODUCTION.md](docs/VPS-PRODUCTION.md).
 
-Пример (подставь IP сервера):
+## Логин
 
-```env
-VITE_API_URL=http://YOUR_SERVER_IP:8081
-VITE_ADMIN_USER=admin
-VITE_ADMIN_PASSWORD=сложный_пароль
-```
-
-### 2. Запусти фронт
-
-**Вариант A — docker compose (рекомендуется):**
-
-```bash
-docker compose up -d --build
-```
-
-**Вариант B — без Docker (если лимит Docker Hub):**
-
-```bash
-npm ci
-npm run build
-npx serve -s dist -l 3000
-```
-
-Админка: `http://YOUR_SERVER_IP:3000`
-
-### 3. API на бэкенде (для данных в таблицах)
-
-В `/opt/psych-bot/.env`:
-
-```env
-API_CORS_ORIGINS=http://YOUR_SERVER_IP:3000
-```
-
-В `psych-bot/docker-compose.yml` у сервиса `api` порт наружу:
-
-```yaml
-ports:
-  - "0.0.0.0:8081:8081"
-```
-
-```bash
-cd /opt/psych-bot
-docker compose up -d --build api
-```
+Учётные данные задаются **при сборке**: `VITE_ADMIN_USER`, `VITE_ADMIN_PASSWORD` (см. `.env.example`). Проверка только во фронте; API backend отдельно не авторизует admin SPA.
 
 ## Структура
 
@@ -91,4 +51,8 @@ src/
   app/           — точка входа, роуты
   features/      — auth, shell, entity-list, client-detail
   shared/        — api, ui, config
+docs/
+  VPS-PRODUCTION.md
+scripts/
+  deploy-nginx-port4205.example.conf
 ```

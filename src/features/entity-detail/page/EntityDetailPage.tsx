@@ -30,6 +30,8 @@ export function EntityDetailPage({ entity }: { entity: EntityConfig }) {
       record={record}
       loading={loading}
       error={error}
+      detailFields={entity.detailFields}
+      fieldLabels={entity.fieldLabels}
       onBack={() => navigate(-1)}
     />
   )

@@ -15,6 +15,7 @@ function formatValue(value: unknown, truncate = true): string {
 export interface DataTableViewProps<T extends BaseBean> {
   rows: T[]
   columns: string[]
+  columnLabels?: Record<string, string>
   onRowClick?: (id: number) => void
   emptyTitle?: string
   emptyDescription?: string
@@ -23,6 +24,7 @@ export interface DataTableViewProps<T extends BaseBean> {
 export function DataTableView<T extends BaseBean>({
   rows,
   columns,
+  columnLabels,
   onRowClick,
   emptyTitle = 'Нет данных',
   emptyDescription = 'Записи появятся здесь, когда они будут в системе.',
@@ -39,7 +41,7 @@ export function DataTableView<T extends BaseBean>({
         <thead>
           <tr>
             {visibleColumns.map((column) => (
-              <th key={column}>{column}</th>
+              <th key={column}>{columnLabels?.[column] ?? column}</th>
             ))}
           </tr>
         </thead>
@@ -68,24 +70,31 @@ export function DataTableView<T extends BaseBean>({
 
 export interface DetailPanelViewProps<T extends BaseBean> {
   row: T | null
-  columns?: (keyof T & string)[]
+  columns?: string[]
+  fieldLabels?: Record<string, string>
 }
 
-export function DetailPanelView<T extends BaseBean>({ row, columns }: DetailPanelViewProps<T>) {
+export function DetailPanelView<T extends BaseBean>({
+  row,
+  columns,
+  fieldLabels,
+}: DetailPanelViewProps<T>) {
   if (!row) {
     return <EmptyStateView icon={Inbox} title="Нет данных" />
   }
 
   const entries = columns?.length
-    ? columns.map((key) => [key, row[key]] as const)
+    ? columns.map((key) => [key, row[key as keyof T]] as const)
     : (Object.entries(row) as [keyof T & string, T[keyof T]][])
 
   return (
     <dl className="ui-detail">
       {entries.map(([key, value]) => (
         <div key={String(key)} className="ui-detail-row">
-          <dt className="ui-detail-label">{String(key)}</dt>
-          <dd className="ui-detail-value">{formatValue(value, false)}</dd>
+          <dt className="ui-detail-label">{fieldLabels?.[String(key)] ?? String(key)}</dt>
+          <dd className={`ui-detail-value${key === 'searchProfile' ? ' ui-detail-value-pre' : ''}`}>
+            {formatValue(value, false)}
+          </dd>
         </div>
       ))}
     </dl>

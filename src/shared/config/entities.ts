@@ -6,9 +6,69 @@ export interface EntityConfig<K extends EntityKey = EntityKey> {
   path: string
   endpoint: string
   columns: string[]
+  /** Порядок полей на странице детали */
+  detailFields?: string[]
+  /** Человекочитаемые подписи полей */
+  fieldLabels?: Record<string, string>
   clientScoped?: boolean
   drillDown?: boolean
   detail?: boolean
+}
+
+/** Подписи элемента каталога */
+export const ITEM_FIELD_LABELS: Record<string, string> = {
+  id: 'ID',
+  createdAt: 'Создано',
+  contentType: 'Тип',
+  title: 'Название',
+  shortDescription: 'Краткое описание',
+  fullDescription: 'Полное описание',
+  searchProfile: 'Профиль поиска',
+  description: 'Описание',
+  category: 'Категория',
+  subcategory: 'Подкатегория',
+  mediaType: 'Формат',
+  telegramFileId: 'Telegram file_id',
+  videoUrl: 'URL видео',
+  durationSec: 'Длительность (сек)',
+  active: 'Активен',
+  packageTitles: 'Пакеты',
+  legacySource: 'Источник (legacy)',
+  legacyId: 'Legacy ID',
+}
+
+export const ITEM_DETAIL_FIELDS = [
+  'id',
+  'createdAt',
+  'title',
+  'contentType',
+  'shortDescription',
+  'fullDescription',
+  'description',
+  'searchProfile',
+  'category',
+  'subcategory',
+  'packageTitles',
+  'mediaType',
+  'durationSec',
+  'active',
+  'telegramFileId',
+  'videoUrl',
+  'legacySource',
+  'legacyId',
+]
+
+export const PACKAGE_FIELD_LABELS: Record<string, string> = {
+  id: 'ID',
+  createdAt: 'Создано',
+  title: 'Название',
+  slug: 'Slug',
+  description: 'Описание',
+  coverImageUrl: 'Обложка',
+  comingSoon: 'Скоро',
+  accessTier: 'Тариф',
+  active: 'Активен',
+  itemCount: 'Элементов',
 }
 
 export const CLIENT_RELATIONS: EntityConfig[] = [
@@ -103,19 +163,45 @@ export const ENTITIES: EntityConfig[] = [
     columns: ['id', 'clientId', 'amount', 'currency', 'channel', 'status', 'createdAt'],
   },
   {
-    key: 'meditations',
-    title: 'Медитации',
-    path: '/meditations',
-    endpoint: '/api/meditations',
-    columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    key: 'practice-items',
+    title: 'Элементы каталога',
+    path: '/practice-items',
+    endpoint: '/api/practice-items',
+    columns: [
+      'id',
+      'title',
+      'contentType',
+      'shortDescription',
+      'category',
+      'subcategory',
+      'packageTitles',
+      'mediaType',
+      'durationSec',
+      'active',
+    ],
+    detailFields: ITEM_DETAIL_FIELDS,
+    fieldLabels: ITEM_FIELD_LABELS,
     detail: true,
   },
   {
-    key: 'practices',
-    title: 'Практики',
-    path: '/practices',
-    endpoint: '/api/practices',
-    columns: ['id', 'title', 'description', 'category', 'subcategory', 'mediaType', 'durationSec', 'active'],
+    key: 'content-packages',
+    title: 'Пакеты',
+    path: '/content-packages',
+    endpoint: '/api/content-packages',
+    columns: ['id', 'title', 'slug', 'description', 'accessTier', 'comingSoon', 'itemCount', 'active'],
+    detailFields: [
+      'id',
+      'createdAt',
+      'title',
+      'slug',
+      'description',
+      'coverImageUrl',
+      'accessTier',
+      'comingSoon',
+      'active',
+      'itemCount',
+    ],
+    fieldLabels: PACKAGE_FIELD_LABELS,
     detail: true,
   },
   {

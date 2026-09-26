@@ -12,6 +12,8 @@ export interface EntityDetailViewProps {
   record: BaseBean | null
   loading: boolean
   error: string | null
+  detailFields?: string[]
+  fieldLabels?: Record<string, string>
   onBack: () => void
 }
 
@@ -21,6 +23,8 @@ export function EntityDetailView({
   record,
   loading,
   error,
+  detailFields,
+  fieldLabels,
   onBack,
 }: EntityDetailViewProps) {
   return (
@@ -50,7 +54,7 @@ export function EntityDetailView({
 
       {!loading && !error && record && (
         <div className={styles.card}>
-          <DetailPanelView row={record} />
+          <DetailPanelView row={record} columns={detailFields} fieldLabels={fieldLabels} />
         </div>
       )}
     </section>

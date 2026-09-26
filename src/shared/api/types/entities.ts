@@ -81,30 +81,34 @@ export interface RecommendationBean extends BaseBean {
   courseId: number | null
 }
 
-export interface MeditationBean extends BaseBean {
+export interface PracticeItemBean extends BaseBean {
+  contentType: string | null
   title: string | null
+  shortDescription: string | null
+  fullDescription: string | null
   description: string | null
+  searchProfile: string | null
   category: string | null
   subcategory: string | null
   mediaType: string | null
-  telegramFileId: string | null
-  videoUrl: string | null
   durationSec: number | null
   active: boolean
-  vectorDocId: string | null
+  telegramFileId: string | null
+  videoUrl: string | null
+  packageTitles: string | null
+  legacySource: string | null
+  legacyId: number | null
 }
 
-export interface PracticeBean extends BaseBean {
+export interface ContentPackageBean extends BaseBean {
   title: string | null
+  slug: string | null
   description: string | null
-  category: string | null
-  subcategory: string | null
-  mediaType: string | null
-  telegramFileId: string | null
-  videoUrl: string | null
-  durationSec: number | null
+  coverImageUrl: string | null
+  comingSoon: boolean
+  accessTier: string | null
   active: boolean
-  vectorDocId: string | null
+  itemCount: number
 }
 
 export interface CourseBean extends BaseBean {
@@ -137,8 +141,8 @@ export type EntityKey =
   | 'client-content-recommendations'
   | 'client-content-feedback'
   | 'recommendations'
-  | 'meditations'
-  | 'practices'
+  | 'practice-items'
+  | 'content-packages'
   | 'courses'
   | 'knowledge-entries'
   | 'system-configurations'
@@ -153,8 +157,8 @@ export interface EntityBeanMap {
   'client-content-recommendations': ClientContentRecommendationBean
   'client-content-feedback': ClientContentFeedbackBean
   recommendations: RecommendationBean
-  meditations: MeditationBean
-  practices: PracticeBean
+  'practice-items': PracticeItemBean
+  'content-packages': ContentPackageBean
   courses: CourseBean
   'knowledge-entries': KnowledgeEntryBean
   'system-configurations': SystemConfigurationBean
