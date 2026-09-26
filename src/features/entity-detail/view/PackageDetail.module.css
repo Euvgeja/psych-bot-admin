@@ -57,6 +57,11 @@
   color: var(--color-text-secondary);
 }
 
+.description {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 .textarea,
 .select {
   width: 100%;

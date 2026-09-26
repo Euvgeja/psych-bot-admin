@@ -11,6 +11,11 @@ const TYPE_LABELS: Record<string, string> = {
   TECHNIQUE: 'Техника',
 }
 
+const TIER_LABELS: Record<string, string> = {
+  FREE: 'FREE — открытый пакет',
+  PRO: 'PRO — по подписке',
+}
+
 export interface PackageDetailViewProps {
   title: string
   recordId: number
@@ -21,8 +26,11 @@ export interface PackageDetailViewProps {
   saving: boolean
   error: string | null
   saved: boolean
+  editing: boolean
   onDescriptionChange: (value: string) => void
   onAccessTierChange: (value: string) => void
+  onStartEdit: () => void
+  onCancelEdit: () => void
   onSave: () => void
   onBack: () => void
 }
@@ -37,8 +45,11 @@ export function PackageDetailView({
   saving,
   error,
   saved,
+  editing,
   onDescriptionChange,
   onAccessTierChange,
+  onStartEdit,
+  onCancelEdit,
   onSave,
   onBack,
 }: PackageDetailViewProps) {
@@ -76,32 +87,53 @@ export function PackageDetailView({
               {record.active ? '' : ' · выключен'}
             </p>
 
-            <label className={styles.field}>
+            <div className={styles.field}>
               <span className={styles.label}>Описание</span>
-              <textarea
-                className={styles.textarea}
-                rows={4}
-                value={description}
-                onChange={(event) => onDescriptionChange(event.target.value)}
-              />
-            </label>
+              {editing ? (
+                <textarea
+                  className={styles.textarea}
+                  rows={4}
+                  value={description}
+                  onChange={(event) => onDescriptionChange(event.target.value)}
+                />
+              ) : (
+                <p className={description ? styles.description : styles.empty}>
+                  {description || 'Описание не заполнено.'}
+                </p>
+              )}
+            </div>
 
-            <label className={styles.field}>
+            <div className={styles.field}>
               <span className={styles.label}>Подписка</span>
-              <select
-                className={styles.select}
-                value={accessTier}
-                onChange={(event) => onAccessTierChange(event.target.value)}
-              >
-                <option value="FREE">FREE — открытый пакет</option>
-                <option value="PRO">PRO — по подписке</option>
-              </select>
-            </label>
+              {editing ? (
+                <select
+                  className={styles.select}
+                  value={accessTier}
+                  onChange={(event) => onAccessTierChange(event.target.value)}
+                >
+                  <option value="FREE">FREE — открытый пакет</option>
+                  <option value="PRO">PRO — по подписке</option>
+                </select>
+              ) : (
+                <p className={styles.description}>{TIER_LABELS[accessTier] ?? accessTier}</p>
+              )}
+            </div>
 
             <div className={styles.actions}>
-              <ButtonView onClick={onSave} disabled={saving}>
-                {saving ? 'Сохраняю…' : 'Сохранить'}
-              </ButtonView>
+              {editing ? (
+                <>
+                  <ButtonView onClick={onSave} disabled={saving}>
+                    {saving ? 'Сохраняю…' : 'Сохранить'}
+                  </ButtonView>
+                  <ButtonView variant="secondary" onClick={onCancelEdit} disabled={saving}>
+                    Отмена
+                  </ButtonView>
+                </>
+              ) : (
+                <ButtonView variant="secondary" onClick={onStartEdit}>
+                  Редактировать
+                </ButtonView>
+              )}
               {saved && <span className={styles.saved}>Сохранено</span>}
             </div>
           </div>

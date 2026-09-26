@@ -16,12 +16,14 @@ export function PackageDetailPage({ entity }: { entity: EntityConfig }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
+  const [editing, setEditing] = useState(false)
 
   useEffect(() => {
     if (!id) return
     setLoading(true)
     setError(null)
     setSaved(false)
+    setEditing(false)
     entityListService
       .getById<ContentPackageBean>(entity.endpoint, Number(id))
       .then((next) => {
@@ -47,11 +49,19 @@ export function PackageDetailPage({ entity }: { entity: EntityConfig }) {
       setDescription(next.description ?? '')
       setAccessTier(next.accessTier ?? 'FREE')
       setSaved(true)
+      setEditing(false)
     } catch {
       setError('Не удалось сохранить пакет')
     } finally {
       setSaving(false)
     }
+  }
+
+  function cancelEdit() {
+    setDescription(record?.description ?? '')
+    setAccessTier(record?.accessTier ?? 'FREE')
+    setSaved(false)
+    setEditing(false)
   }
 
   return (
@@ -65,8 +75,14 @@ export function PackageDetailPage({ entity }: { entity: EntityConfig }) {
       saving={saving}
       error={error}
       saved={saved}
+      editing={editing}
       onDescriptionChange={setDescription}
       onAccessTierChange={setAccessTier}
+      onStartEdit={() => {
+        setSaved(false)
+        setEditing(true)
+      }}
+      onCancelEdit={cancelEdit}
       onSave={() => void save()}
       onBack={() => navigate(-1)}
     />
