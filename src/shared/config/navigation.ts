@@ -21,6 +21,8 @@ export const MENU_GROUPS: MenuGroup[] = [
     items: [
       { id: 'clients', label: 'Clients', path: '/clients', entityKey: 'clients' },
       { id: 'payments', label: 'Payments', path: '/payments', entityKey: 'payments' },
+      { id: 'ledger-entries', label: 'Ledger', path: '/ledger-entries', entityKey: 'ledger-entries' },
+      { id: 'ledger-accounts', label: 'Accounts', path: '/ledger-accounts', entityKey: 'ledger-accounts' },
       { id: 'subscriptions', label: 'Subscriptions', path: '/subscriptions', entityKey: 'subscriptions' },
     ],
   },

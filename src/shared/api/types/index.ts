@@ -11,6 +11,8 @@ export type {
   EntityKey,
   EntityRow,
   KnowledgeEntryBean,
+  LedgerAccountBean,
+  LedgerEntryBean,
   ContentPackageBean,
   ContentPackageItemBean,
   PaymentBean,

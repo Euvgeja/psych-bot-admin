@@ -31,11 +31,34 @@ export interface PaymentBean extends BaseBean {
   clientId: number | null
   amount: number | null
   currency: string | null
+  direction: string | null
+  bookingDate: string | null
+  feeAmount: number | null
+  receiptId: string | null
+  originalPaymentId: number | null
   channel: string | null
   purpose: string | null
   externalId: string | null
   status: string | null
+  subscriptionApplied: boolean
   metadataJson: string | null
+}
+
+export interface LedgerAccountBean extends BaseBean {
+  code: string | null
+  name: string | null
+}
+
+export interface LedgerEntryBean extends BaseBean {
+  paymentId: number | null
+  kind: string | null
+  debitAccountId: number | null
+  debitAccountCode: string | null
+  creditAccountId: number | null
+  creditAccountCode: string | null
+  amount: number | null
+  currency: string | null
+  bookingDate: string | null
 }
 
 export interface ChatMessageBean extends BaseBean {
@@ -94,7 +117,7 @@ export interface PracticeItemBean extends BaseBean {
   durationSec: number | null
   active: boolean
   telegramFileId: string | null
-  videoUrl: string | null
+  fileUrl: string | null
   packageTitles: string | null
   legacySource: string | null
   legacyId: number | null
@@ -145,6 +168,8 @@ export type EntityKey =
   | 'users'
   | 'subscriptions'
   | 'payments'
+  | 'ledger-accounts'
+  | 'ledger-entries'
   | 'chat-messages'
   | 'client-sessions'
   | 'client-content-recommendations'
@@ -161,6 +186,8 @@ export interface EntityBeanMap {
   users: UserBean
   subscriptions: SubscriptionBean
   payments: PaymentBean
+  'ledger-accounts': LedgerAccountBean
+  'ledger-entries': LedgerEntryBean
   'chat-messages': ChatMessageBean
   'client-sessions': ClientSessionBean
   'client-content-recommendations': ClientContentRecommendationBean
