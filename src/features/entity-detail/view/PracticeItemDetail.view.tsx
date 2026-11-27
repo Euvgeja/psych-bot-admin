@@ -5,6 +5,7 @@ import { DetailPanelView } from '../../../shared/ui/DataTable/DataTable.view'
 import { SkeletonView } from '../../../shared/ui/Skeleton/Skeleton.view'
 import '../../../shared/ui/ui.css'
 import styles from './PracticeItemDetail.module.css'
+import { MatchPhraseFields } from './MatchPhraseFields.view'
 
 export interface PracticeItemDetailViewProps {
   title: string
@@ -67,12 +68,13 @@ export function PracticeItemDetailView({
 
       {!loading && record && (
         <div className={styles.layout}>
+          <MatchPhraseFields practiceId={record.id} />
           <div className={styles.card}>
             <div className={styles.profileHeader}>
               <div>
                 <h3 className={styles.sectionTitle}>Профиль поиска</h3>
                 <p className={styles.hint}>
-                  Вставь состояния и потребности из таблицы. После сохранения вектор обновится автоматически.
+                  Старое общее описание. Опрос его не читает. Фразы для подбора — в трёх полях выше.
                 </p>
               </div>
               {!editing && (
@@ -84,7 +86,7 @@ export function PracticeItemDetailView({
 
             {editing ? (
               <textarea
-                className={styles.textarea}
+                className={`${styles.textarea} ${styles.textareaLarge}`}
                 rows={18}
                 value={searchProfile}
                 autoFocus
