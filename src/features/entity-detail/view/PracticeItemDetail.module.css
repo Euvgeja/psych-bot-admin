@@ -61,6 +61,14 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.phraseArea {
+  height: 7.5rem;
+  min-height: 7.5rem;
+  overflow-y: auto;
+  resize: none;
+  font-size: var(--font-size-sm);
+}
+
 .textareaLarge {
   min-height: 320px;
 }

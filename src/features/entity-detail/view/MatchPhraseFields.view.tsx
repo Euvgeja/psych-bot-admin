@@ -21,6 +21,7 @@ function countLines(value: string): number {
 export function MatchPhraseFields({ practiceId }: { practiceId: number }) {
   const [form, setForm] = useState<PhraseForm>(emptyForm)
   const [loading, setLoading] = useState(true)
+  const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -72,24 +73,28 @@ export function MatchPhraseFields({ practiceId }: { practiceId: number }) {
     }
   }
 
+  const summary = loading
+    ? 'Загрузка…'
+    : `Минус ${countLines(form.minus)}, плюс ${countLines(form.plus)}, потребности ${countLines(form.needs)}`
+
   return (
     <div className={styles.card}>
-      <div>
-        <h3 className={styles.sectionTitle}>Фразы подбора</h3>
-        <p className={styles.hint}>
-          Одна фраза на строку. Можно вставлять строки с дефисом. После сохранения эти строки участвуют в опросе.
-        </p>
+      <div className={styles.profileHeader}>
+        <div>
+          <h3 className={styles.sectionTitle}>Фразы подбора</h3>
+          <p className={styles.hint}>{summary}</p>
+        </div>
+        <ButtonView variant="secondary" onClick={() => setOpen((current) => !current)} disabled={loading}>
+          {open ? 'Скрыть' : 'Открыть'}
+        </ButtonView>
       </div>
       {error && <p className="ui-error">{error}</p>}
-      {loading ? (
-        <p className={styles.hint}>Загрузка фраз…</p>
-      ) : (
+      {open && !loading && (
         <>
           <label className={styles.field}>
             <span>Минусовые состояния, баллы 1–5</span>
             <textarea
-              className={styles.textarea}
-              rows={8}
+              className={`${styles.textarea} ${styles.phraseArea}`}
               value={form.minus}
               aria-label="Минусовые состояния"
               onChange={(event) => setForm((current) => ({ ...current, minus: event.target.value }))}
@@ -98,8 +103,7 @@ export function MatchPhraseFields({ practiceId }: { practiceId: number }) {
           <label className={styles.field}>
             <span>Плюсовые состояния, баллы 6–10</span>
             <textarea
-              className={styles.textarea}
-              rows={8}
+              className={`${styles.textarea} ${styles.phraseArea}`}
               value={form.plus}
               aria-label="Плюсовые состояния"
               onChange={(event) => setForm((current) => ({ ...current, plus: event.target.value }))}
@@ -108,8 +112,7 @@ export function MatchPhraseFields({ practiceId }: { practiceId: number }) {
           <label className={styles.field}>
             <span>Потребности</span>
             <textarea
-              className={styles.textarea}
-              rows={8}
+              className={`${styles.textarea} ${styles.phraseArea}`}
               value={form.needs}
               aria-label="Потребности"
               onChange={(event) => setForm((current) => ({ ...current, needs: event.target.value }))}
@@ -119,11 +122,7 @@ export function MatchPhraseFields({ practiceId }: { practiceId: number }) {
             <ButtonView onClick={() => void save()} disabled={saving}>
               {saving ? 'Сохраняю…' : 'Сохранить фразы'}
             </ButtonView>
-            {saved && (
-              <span className={styles.saved}>
-                Сохранено. Минус: {countLines(form.minus)}, плюс: {countLines(form.plus)}, потребности: {countLines(form.needs)}.
-              </span>
-            )}
+            {saved && <span className={styles.saved}>Сохранено</span>}
           </div>
         </>
       )}
