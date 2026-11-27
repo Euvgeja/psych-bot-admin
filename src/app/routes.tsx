@@ -5,6 +5,7 @@ import { ClientDetailPage } from '../features/client-detail/page/ClientDetailPag
 import { EntityDetailPage } from '../features/entity-detail/page/EntityDetailPage'
 import { PackageDetailPage } from '../features/entity-detail/page/PackageDetailPage'
 import { PracticeItemDetailPage } from '../features/entity-detail/page/PracticeItemDetailPage'
+import { SystemConfigurationDetailPage } from '../features/entity-detail/page/SystemConfigurationDetailPage'
 import { EntityListPage } from '../features/entity-list/page/EntityListPage'
 import { TabProvider } from '../features/shell/context/TabProvider'
 import { ShellLayout } from '../features/shell/page/ShellLayout'
@@ -29,6 +30,8 @@ function WorkspaceRoutes() {
                 <PackageDetailPage entity={entity} />
               ) : entity.key === 'practice-items' ? (
                 <PracticeItemDetailPage entity={entity} />
+              ) : entity.key === 'system-configurations' ? (
+                <SystemConfigurationDetailPage entity={entity} />
               ) : (
                 <EntityDetailPage entity={entity} />
               )
