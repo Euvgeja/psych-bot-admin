@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  max-width: 860px;
+  width: fit-content;
+  min-width: min(100%, 42rem);
+  max-width: 100%;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -25,11 +27,16 @@
 }
 
 .data {
-  width: 100%;
-  height: 16rem;
-  min-height: 16rem;
+  box-sizing: border-box;
+  width: 42rem;
+  max-width: 100%;
+  height: 28rem;
+  min-width: 20rem;
+  min-height: 12rem;
   overflow: auto;
-  resize: none;
+  resize: both;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   padding: var(--space-3);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
